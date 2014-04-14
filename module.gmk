@@ -1,0 +1,76 @@
+##********************just care what we should care(not for gmake fans)*******************************#
+
+##color prompt****************************************************************************************#
+# if we use "my_gmake" file as syntax file and vibrantint as color scheme which are attached with this gmk_library, we will see three kinds of color
+# which we should care
+# red: we should particularly notice it, which we almost change everytimes.
+# blue: we also need to change it if it's necessary, but it isn't so frequent as red color as
+# green: maybe we want to define these varibles by ourselves although it is not necessary in most time. It can work by itself without our care
+##****************************************************************************************************#
+
+##we should specially care about these variables******************************************************#
+					# set compiling dependence
+# same as $C_INCLUDE_PATH $CPP_INCLUDE_PATH or gcc -I option if this value start with 0, it will not inherit the value of $(INCLUDE_PATH) in makefile
+INCLUDE_PATH_MODULE			:= #$(solution_path)/base/business $(solution_path)/base/platform/ttc.engine $(solution_path)/base/platform/meta.svr# 0 /usr/foo /usr/local/foo
+
+# default library path where we will find supporting static or dynamic library in when make static lib. if this value start with 0, it will not inherit the value of $(LINK_PATH_S) in makefile
+LINK_PATH_MODULE_S          :=# $(binary_path)/foo 
+# default library name list which we need to find when make static lib. if this value start with 0, it will not inherit the value of $(LINK_LIB_MODULE) in makefile
+LINK_LIB_MODULE_S           :=# -lfoo 
+
+# default library path where we will find supporting static or dynamic library in when link. if this value start with 0, it will not inherit the value of $(LINK_PATH) in makefile
+LINK_PATH_MODULE			=#$(binary_path)/base/platform/daemon/async.work/src $(binary_path)/spp/fw.so $(binary_path)/base/dao#$(binary_path)/foo# /export/home/apue/apue10/10-6/bin
+# default library name list which we need to find when link. if this value start with 0, it will not inherit the value of $(LINK_LIB) in makefile
+LINK_LIB_MODULE				:=0 -lqos_client -lmsglog -ldnscli -laworker -lrt -lpthread -ldl libstdc++.so.6 -lcurl#-lfw -ldao# 0 -lghttp -lexpat# -lsocket#0 -R. -lfoo -lSleep2 -lsleepEx#-Wl,-Mapp/mapfile -R. -lfoo
+# symbols export file
+MAPFILE						:= #$(solution_path)/foo/mapfile.map#/export/home/make/so.version.demo.new/foo/mapfile.map
+
+					# set compiling flags
+# module compile option, it will coverd the value of $(USER_CFLAGS) in makefile unless it is null, and if start with 0, will not inherit the default value in gmk_library
+USER_CFLAGS_MODULE			:=# -D SOLARIS# -floop-optimize# --with-low-memory -fno-inline# 0 -std=c99
+# module app link option, it will coverd the value of $(USER_APPFLAGS) in makefile unless it is null, and if start with 0, will not inherit the default value in gmk_library
+USER_APPFLAGS_MODULE		:= 
+# module so link option, it will coverd the value of $(USER_SOFLAGS) in makefile unless it is null, and if start with 0, will not inherit the default value in gmk_library
+USER_SOFLAGS_MODULE 		:=# 0 -shared# -mimpure-text
+
+PUBLISH_PATH_MODULE         :=
+
+					# set output
+SUB_APP						:=test.elf
+# static link output name
+LIBRARY_NAME				:=#liborder_create_pay_notify.a
+# dynamic link output name
+SHARE_OBJ_NAME  			:=#liborder_create_pay_notify.so.0.0.1
+SONAME						:=#liborder_create_pay_notify.so.0.0
+##****************************************************************************************************#
+
+##set sub folder and other folder to compile**********************************************************#
+#It'll inherit "SUB_PATH_RECURSIVE" defined in "makefile" unless it start with "0"
+SUB_PATH_RECURSIVE_MODULE	:=#1
+#It'll inherit "SUB_PATH_NO_COMPILE" defined in "makefile" unless it start with "0"
+SUB_PATH_NO_COMPILE_MODULE	:=# bk/% notify/%# test.c tmp/test.c#te%.c tmp/test.c tmp/tes%.c tmp1/% tmp2%/
+
+#It'll inherit "OTHER_PATH" defined in "makefile" unless it start with "0"
+OTHER_PATH_MODULE			=#$(solution_path)/base/comm/network $(solution_path)/base/comm/lock $(solution_path)/base/comm/tuan $(solution_path)/base/comm/log# $(solution_path)/base/business# $(solution_path)/base/dao# $(solution_path)/../../Base/Comm/oidb_api $(solution_path)/../../Base/Comm/oidb_api/comm/oidbcomm $(solution_path)/../../Base/Comm/oidb_api/comm/oidbapi_0x70f $(solution_path)/../../Base/Comm/oidb_api/comm/oidbapi_0x710# $(OTHER_PATH1) $(OTHER_PATH2)
+#It'll inherit "OTHER_PATH_RECURSIVE" defined in "makefile" unless it start with "0"
+OTHER_PATH_RECURSIVE_MODULE	:=1
+#It'll inherit "OTHER_PATH_NO_COMPILE" defined in "makefile" unless it start with "0"
+OTHER_PATH_NO_COMPILE_MODULE:=# $(solution_path)/../../Base/Comm/oidb_api/oidb_auto_client.cpp $(solution_path)/../../Base/Comm/oidb_api/oidb_auto_client.ToUin.cpp# $(OTHER_PATH1)/other.test.c $(OTHER_PATH1)/tmp4/other.tmp4.test2.c $(OTHER_PATH2)/tmp4/other1.tmp4.test1.c
+OTHER_COMPILE_FILE_MODULE   :=# $(solution_path)/base/library/library.cpp
+##****************************************************************************************************#
+
+##maybe we want to define these varibles by ourselves although it is not necessary in most time*********#
+use_debug_module			:=# 0
+user_compiler_module		:=# gcc
+##****************************************************************************************************#
+
+##include gmk_library which do ugly work for us now***************************************************#
+#$(eval $(call make-src,$(subdirectory)))
+subdirectory 				:= $(patsubst %/module.gmk,%,$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST)))
+include $(gmk_include_path)/Nonrecursive/nonrecursive.ex.module.gmk
+
+##****************************************************************************************************#
+# we can do sth else in this target after compile finished
+# must under include nonrecursive.ex.module.gmk or $(cur_module_id) is null
+$(cur_module_id)_appendix: $(shell echo "module[$(cur_module_id)]")
+#	@echo "$< finished. appendix:"
