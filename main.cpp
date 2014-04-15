@@ -8,12 +8,28 @@
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
 #include <signal.h>
+#include <unistd.h>
+#include "thread.h"
 
 #define LISTEN_BACKLOG 50
 #define MAX_EVENT_NUM 100
 
 #define handle_error(msg) \
     do { perror(msg); exit(EXIT_FAILURE); } while (0)
+
+	class PrintThread :public Thread
+{
+public:
+	int Run()
+	{
+		while (true)
+		{
+			fprintf(stderr, ".");
+			sleep(1);
+		}
+		return 0;
+	}	
+};
 
 void set_block_flag(int fd, bool non_block)
 {
@@ -26,6 +42,25 @@ void default_handler(int signo)
 }
 int main(int argc, char* argv[])
 {
+	Thread* thread = new PrintThread();
+	thread->Start();
+
+	while (true)
+	{
+		char c = getchar();
+		switch (c)
+		{
+			case 's':
+				thread->Suspend();
+				break;
+			case 'r':
+				thread->Resume();
+				break;
+			case 'k':
+				thread->Kill();
+				break;
+		}
+	}
 	int epoll_fd = epoll_create(10);
 	if (epoll_fd == -1)
 	{
