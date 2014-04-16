@@ -19,9 +19,9 @@ LINK_PATH_MODULE_S          :=# $(binary_path)/foo
 LINK_LIB_MODULE_S           :=# -lfoo 
 
 # default library path where we will find supporting static or dynamic library in when link. if this value start with 0, it will not inherit the value of $(LINK_PATH) in makefile
-LINK_PATH_MODULE			=#$(binary_path)/base/platform/daemon/async.work/src $(binary_path)/spp/fw.so $(binary_path)/base/dao#$(binary_path)/foo# /export/home/apue/apue10/10-6/bin
+LINK_PATH_MODULE			= #$(binary_path)/base/platform/daemon/async.work/src $(binary_path)/spp/fw.so $(binary_path)/base/dao#$(binary_path)/foo# /export/home/apue/apue10/10-6/bin
 # default library name list which we need to find when link. if this value start with 0, it will not inherit the value of $(LINK_LIB) in makefile
-LINK_LIB_MODULE				:=0 -lqos_client -lmsglog -ldnscli -laworker -lrt -lpthread -ldl libstdc++.so.6 -lcurl#-lfw -ldao# 0 -lghttp -lexpat# -lsocket#0 -R. -lfoo -lSleep2 -lsleepEx#-Wl,-Mapp/mapfile -R. -lfoo
+LINK_LIB_MODULE				:= #-lfw -ldao# 0 -lghttp -lexpat# -lsocket#0 -R. -lfoo -lSleep2 -lsleepEx#-Wl,-Mapp/mapfile -R. -lfoo
 # symbols export file
 MAPFILE						:= #$(solution_path)/foo/mapfile.map#/export/home/make/so.version.demo.new/foo/mapfile.map
 

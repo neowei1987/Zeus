@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include "thread.h"
 
+int BinaryTreeTestEntry(int argc, char* argv[]);
+
 #define LISTEN_BACKLOG 50
 #define MAX_EVENT_NUM 100
 
@@ -42,6 +44,9 @@ void default_handler(int signo)
 }
 int main(int argc, char* argv[])
 {
+	BinaryTreeTestEntry(argc, argv);
+	return 0;
+
 	Thread* thread = new PrintThread();
 	thread->Start();
 

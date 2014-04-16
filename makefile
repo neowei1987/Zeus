@@ -25,7 +25,7 @@
 ##we should specially care about these variables******************************************************#
 					# set modules compiled in order
 # 2010-01-06 will compile only module defined by MODULE_ONLY_COMPILE which exclude variable:MODULE_COMPILE_ORDER, MODULE_NO_COMPILE	
-MODULE_ONLY_COMPILE 	:=# server.order.create/svr.so# server.order.create/spp.so server.order.create/svr.so#tools/orm# src.sdk
+MODULE_ONLY_COMPILE 	:= # server.order.create/svr.so# server.order.create/spp.so server.order.create/svr.so#tools/orm# src.sdk
 # 2009-05-16 if module need be compiled in some order, use this param to define order. it will compile all module except module defined in_no_compile
 MODULE_COMPILE_ORDER	:= ./ #:=0 will not compile any module, := will compile all of module in $(solution_path)
 # 2009-05-14 remove module that need not be compiled
@@ -35,7 +35,7 @@ MODULE_NO_COMPILE		:= #tools/orm# base/dao# library bk# foo app
 					# set compiling dependence
 # same as $C_INCLUDE_PATH $CPP_INCLUDE_PATH or gcc -I option. it will not be covered by $(INCLUDE_PATH_MODULE) unless $(INCLUDE_PATH_MODULE) start with 0
 # we should not use ":=" but "=" because we usually use variable $(solution_path) defined in gmk_library which hasn't been evaluated now
-INCLUDE_PATH			= #$(solution_path)/base/library/include $(solution_path)/base/include $(solution_path)/base/dao/generate #base/comm/ttc_engine# /usr/local/service/mysql-5.0.26/include#base/comm base/include base/comm/log base/library/include
+INCLUDE_PATH			= $(solution_path) # $(solution_path)/base/include $(solution_path)/base/dao/generate #base/comm/ttc_engine# /usr/local/service/mysql-5.0.26/include#base/comm base/include base/comm/log base/library/include
 
 # default library path where we will find supporting static library in when make static library
 LINK_PATH_S             :=
@@ -44,14 +44,14 @@ LINK_LIB_S              :=
 
 # default library path where we will find supporting static or dynamic library in when link. It will not be covered by $(LINK_PATH_MODULE) unless $(LINK_PATH_MODULE) start with 0
 # we should not use ":=" but "=" because we usually use variable $(binary_path) defined in gmk_library which hasn't been evaluated now 
-LINK_PATH				= #$(solution_path)/base/lib64 /lib64 /usr/lib64 /usr/local/lib64# /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu# /usr/local/lib /usr/lib# /export/home/apue/apue10/10-6/bin# $(binary_path) # /usr/lib32# /export/home/apue/Common/apue.2e/lib# $(binary_path)/foo 
+LINK_PATH				:= /lib64 /usr/lib64 /usr/local/lib64 #$(solution_path)/base/lib64 # /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu# /usr/local/lib /usr/lib# /export/home/apue/apue10/10-6/bin# $(binary_path) # /usr/lib32# /export/home/apue/Common/apue.2e/lib# $(binary_path)/foo 
 # default library name list which we need to find when link. It will not be covered by $(LINK_LIB_MODULE) unless $(LINK_LIB_MODULE) start with 0
-LINK_LIB				:= -lstdc++ #-lspp -lqos_client -lttc -lmsglog -ldnscli -lmysqlclient -liconv -lpcre -lrt -lpthread -ldl -ltinyxml
+LINK_LIB				:= -lpthread #-lstdc++ -lspp -lqos_client -lttc -lmsglog -ldnscli -lmysqlclient -liconv -lpcre -lrt  -ldl -ltinyxml
 # -lstdc++#../../../../opt/gcc/gcc-4.4.3/lib/libstdc++.so#/opt/gcc/gcc-4.4.3/lib/libstdc++.so # -lrt#-lSleep2#-lposix4# -lrt#-ldl -lcppunit#-R. -lSleep2# -lapue#-lfoo#-Wl,-Mapp/mapfile -R. -lfoo
 
 					# set compiling flags
 # default compile option. it will be covered by $(USER_CFLAGS_MODULE) unless $(USER_CFLAGS_MODULE) is null
-USER_CFLAGS				:=-m64 -Wall -fPIC -D_GNU_SOURCE -D_REENTRANT -D_OS_LINUX_ -D_COMPILER_CUR_=_COMPILER_GNU_GCC_4_4_3_ -D_NO_COMPILE_POLICY_MESSAGE_# -D_REFUND_FAKE_#-O2 -DNDEBUG# -D_COMPILER_CUR_=_COMPILER_GNU_GCC_3_4_6_ -D_OS_LINUX_# -D_TRACE_RUSH_INDEPENDENT_#-Wno-deprecated# --with-low-memory -fno-inline# 0 -std=c99
+USER_CFLAGS				:= -m64 -Wall -fPIC -D_GNU_SOURCE -D_REENTRANT -D_OS_LINUX_ -D_COMPILER_CUR_=_COMPILER_GNU_GCC_4_4_3_ -D_NO_COMPILE_POLICY_MESSAGE_# -D_REFUND_FAKE_#-O2 -DNDEBUG# -D_COMPILER_CUR_=_COMPILER_GNU_GCC_3_4_6_ -D_OS_LINUX_# -D_TRACE_RUSH_INDEPENDENT_#-Wno-deprecated# --with-low-memory -fno-inline# 0 -std=c99
 # default so link option. it will be covered by $(USER_SOFLAGS_MODULE) unless $(USER_SOFLAGS_MODULE) is null
 USER_SOFLAGS			:=-m64 --export-dynamic -Bdynamic# ../../Base/Comm/md5c.o ../../Base/Comm/log/clog.o#../../Base/Comm/md5c.o# -fPIC# 0 -shared# -mimpure-text	
 # default app link option. it will be covered by $(USER_APP_MODULE) unless $(USER_APPFLAGS_MODULE) is null
