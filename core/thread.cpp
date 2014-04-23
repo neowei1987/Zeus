@@ -100,7 +100,7 @@ void* Thread::ThreadFunc(void* arg)
 	//pthread_setspecific(m_stThreadKey, &suspend); 
 	Thread* pThis = (Thread*)arg;
 	int ret = 0;
-	while (true)
+	//while (true)
 	{
 		ret = pThis->Run();	
 	}

@@ -4,6 +4,11 @@ void* worker(void* argv)
 	
 }
 
+class PressureRunner
+{
+
+};
+
 int entry(int argc, char* argv)
 {
 	//创建N个线程，每个线程循环请求服务器M次

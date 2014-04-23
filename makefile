@@ -51,7 +51,7 @@ LINK_LIB				:= -lpthread #-lstdc++ -lspp -lqos_client -lttc -lmsglog -ldnscli -l
 
 					# set compiling flags
 # default compile option. it will be covered by $(USER_CFLAGS_MODULE) unless $(USER_CFLAGS_MODULE) is null
-USER_CFLAGS				:= -m64 -Wall -fPIC -D_GNU_SOURCE -D_REENTRANT -D_OS_LINUX_ -D_COMPILER_CUR_=_COMPILER_GNU_GCC_4_4_3_ -D_NO_COMPILE_POLICY_MESSAGE_# -D_REFUND_FAKE_#-O2 -DNDEBUG# -D_COMPILER_CUR_=_COMPILER_GNU_GCC_3_4_6_ -D_OS_LINUX_# -D_TRACE_RUSH_INDEPENDENT_#-Wno-deprecated# --with-low-memory -fno-inline# 0 -std=c99
+USER_CFLAGS				:= -g -m64 -Wall -fPIC -D_GNU_SOURCE -D_REENTRANT -D_OS_LINUX_ -D_COMPILER_CUR_=_COMPILER_GNU_GCC_4_4_3_ -D_NO_COMPILE_POLICY_MESSAGE_# -D_REFUND_FAKE_#-O2 -DNDEBUG# -D_COMPILER_CUR_=_COMPILER_GNU_GCC_3_4_6_ -D_OS_LINUX_# -D_TRACE_RUSH_INDEPENDENT_#-Wno-deprecated# --with-low-memory -fno-inline# 0 -std=c99
 # default so link option. it will be covered by $(USER_SOFLAGS_MODULE) unless $(USER_SOFLAGS_MODULE) is null
 USER_SOFLAGS			:=-m64 --export-dynamic -Bdynamic# ../../Base/Comm/md5c.o ../../Base/Comm/log/clog.o#../../Base/Comm/md5c.o# -fPIC# 0 -shared# -mimpure-text	
 # default app link option. it will be covered by $(USER_APP_MODULE) unless $(USER_APPFLAGS_MODULE) is null
@@ -87,7 +87,7 @@ OTHER_COMPILE_FILE		=
 
 ##maybe we want to define these varibles by ourselves although it is not necessary in most time*******#
 # define default compile debug status. it will be change by command variable: debug=1
-use_debug				:=0#$(if $(debug),1,0)
+use_debug				:=1#$(if $(debug),1,0)
 # choose default compiler,eg: gcc, g++, cc, CC. default:gcc
 user_compiler			:=g++ #gcc443# g++
 

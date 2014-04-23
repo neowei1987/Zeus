@@ -9,9 +9,24 @@
 #include <arpa/inet.h>
 #include <signal.h>
 #include <unistd.h>
-#include "thread.h"
+#include <fstream>
+#include <memory.h>
+#include "core/thread.h"
+#include "utility/Pressure.h"
+#include "base/ZuesDefines.h"
+#include "algorithm/Sort.h"
+#include "memory/MemoryTestEntry.h"
+
+using namespace std;
 
 int BinaryTreeTestEntry(int argc, char* argv[]);
+
+inline void memset_tester(void* arg)
+{
+	static int data[1024];
+	memset(data, 0, sizeof(data));
+}
+
 
 #define LISTEN_BACKLOG 50
 #define MAX_EVENT_NUM 100
@@ -44,7 +59,83 @@ void default_handler(int signo)
 }
 int main(int argc, char* argv[])
 {
+	return MemoryTestEntry(argc, argv);
+
+	printf("%d\n", IS_POW_2(0));
+	printf("%d\n", IS_POW_2(1));
+	printf("%d\n", IS_POW_2(2));
+	printf("%d\n", IS_POW_2(17));
+
+
+	printf("%d\n", POW(4, 3));
+	printf("%d\n", POW(2, 10));
+	printf("%d\n", POW(5, 1));
+	printf("%d\n", POW(5, 0));
+
+	printf("%d\n", UP_TO_POW_2(3));
+	printf("%d\n", UP_TO_POW_2(4));
+	printf("%d\n", UP_TO_POW_2(16));
+	printf("%d\n", UP_TO_POW_2(17));
+
+	//sleep不占用cpu时间
+	BEGIN_COST_CALCULATE("sleep");
+	//sleep(3);
+	END_COST_CALCULATE;
+
+	/*延迟测试用*/
+	int num = 0;
+	int* data = NULL;
+	BEGIN_COST_CALCULATE("user calclute");
+	num = 100 * 1024;
+	data = new int[num];
+	END_COST_CALCULATE;
+
+	BEGIN_COST_CALCULATE("bubble sort");
+	int i = 0;
+	while (i < num)
+	{
+		data[i] = rand();
+		i++;
+		//fprintf(stderr, "%d\n", data[i]);
+	}
+	//BubbleSort(data, num);
+	ofstream fs("./bubble.txt");
+	i = 0;
+	while (i < num)
+	{
+		fs << data[i] << endl;
+		i++;
+	}
+	END_COST_CALCULATE;
+
+
+	BEGIN_COST_CALCULATE("quick sort");
+	int i = 0;
+	while (i < num)
+	{
+		data[i] = rand();
+		i++;
+		//fprintf(stderr, "%d\n", data[i]);
+	}
+	QuickSort(data, num);
+	ofstream fs("./quick.txt");
+	i = 0;
+	while (i < num)
+	{
+		fs << data[i] << endl;
+		i++;
+	}
+
+	END_COST_CALCULATE;
+
+	BEGIN_TIMES_CALCULATE("memset", 10, memset_tester, NULL);
+	END_TIMES_CALCULATE();
+	return 0;
+
+	//一个函数可以执行多少次??
+
 	BinaryTreeTestEntry(argc, argv);
+	
 	return 0;
 
 	Thread* thread = new PrintThread();
