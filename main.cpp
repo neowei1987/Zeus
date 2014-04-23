@@ -20,6 +20,7 @@
 using namespace std;
 
 int BinaryTreeTestEntry(int argc, char* argv[]);
+int PatternsTestEntry(int argc, char* argv[]);
 
 inline void memset_tester(void* arg)
 {
@@ -59,6 +60,8 @@ void default_handler(int signo)
 }
 int main(int argc, char* argv[])
 {
+	return PatternsTestEntry(argc, argv);
+
 	return MemoryTestEntry(argc, argv);
 
 	printf("%d\n", IS_POW_2(0));
