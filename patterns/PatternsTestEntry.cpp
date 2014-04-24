@@ -8,6 +8,16 @@
 #include "Composite.h"
 #include "Decorator.h"
 #include "Proxy.h"
+#include "TemplateMethod.h"
+#include "ChainOfResponsibility.h"
+#include "FlyWeight.h"
+#include "Command.h"
+#include "Observer.h"
+#include "Strategy.h"
+#include "State.h"
+#include "Iterator.h"
+#include "Memento.h"
+#include "Visitor.h"
 
 int PatternsTestEntry(int argc, char* argv[])
 {
@@ -88,4 +98,87 @@ int PatternsTestEntry(int argc, char* argv[])
 		proxy->Request();
 	}
 
+	{
+		using namespace template_method;
+		People* p = new MondayPeople();
+		p->doWork();
+	}
+
+	{
+		using namespace chain_of_responsibility;
+		Handler* h1 = new ConcreteHandler1();
+		Handler* h2 = new ConcreteHandler2(h1);
+		h2->Request();
+	}
+
+	{
+		using namespace flyweight;
+		FlyWeightFactory* ff = new FlyWeightFactory();
+		FlyWeight* f = ff->get(0);
+		f->Run();
+		f = ff->get(0);
+		f->Run();
+	}
+
+	{
+		using namespace command;
+		Command* cmd = new ConcreteCommand(new Receiver());
+		Invoker invoker(cmd);
+		invoker.invoke();	
+	}
+
+	{
+		using namespace observer;
+		Observer* o1 = new OneObserver();
+		Observer* o2 = new TwoObserver();
+		Subject* s = new ConcreteSubject();
+		s->addObserver(o1);
+		s->addObserver(o2);
+		s->setState(10);
+		s->notify();
+	}
+
+	{
+		using namespace strategy;
+		Context c(new MyStrategy);
+		c.doJob();
+	}
+
+	{
+		using namespace state;
+		Context c(new StateA()); //设置开始状态
+		c.Request();
+		c.Request();
+		c.Request();
+	}
+
+	{
+		using namespace iterator;
+		ArrayContainer c(4);
+		ArrayContainer::Iterator& it = *(c.getIterator());
+		for (it.First(); it.HasNext(); it.Next())
+		{
+			printf("iterator: %d\n", *it);
+		}
+	}
+
+	{
+		using namespace memento;
+		Originator originator;
+		originator.setState("old state");
+		originator.printState();
+		Memento* m = originator.createMemento(); //设置备忘录
+		originator.setState("new state");
+		originator.printState();
+		originator.recoverState(m); //恢复
+		originator.printState();
+	}
+
+	{
+		using namespace visitor;
+		Visitor* v = new OneVisitor();
+		Element* e = new ElementA();
+		e->Accept(v);
+	}
 }
+
