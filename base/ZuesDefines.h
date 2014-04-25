@@ -1,7 +1,17 @@
 #ifndef ZUES_DEFINES_H
 #define ZUES_DEFINES_H
 
+#include <stdio.h>
+
+/*
+#include <string>
+using std::string;
+char* const s = "xxxxxxxxxxx";
+//const char* const s = "xxxxxxxxxxx";
+//int a = 0;
+const string p = "xxx";
 #include <linux/types.h>
+*/
 
 #define COUNT_OF(arr) (sizeof(arr) / sizeof(arr[0]))
 
@@ -42,6 +52,15 @@ inline int LOG2(int x)
 }
 //向上取2的幂次方，3=>4, 17=>32等
 #define UP_TO_POW_2(x)((IS_POW_2(x)) ? x : (POW(2, LOG2(x) + 1)))
+
+#define CONTAINER_PTR(ptr, container, member)  ((container*)((char*)ptr - ((char*)(&((container*)0x0)->member))))
+
+#define NAMESPACE_BEGIN(name) \
+namespace name \
+{
+
+#define NAMESPACE_END() \
+}
 
 #endif//ZUES_DEFINES_H
 

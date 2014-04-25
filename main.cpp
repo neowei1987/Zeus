@@ -21,13 +21,14 @@ using namespace std;
 
 int BinaryTreeTestEntry(int argc, char* argv[]);
 int PatternsTestEntry(int argc, char* argv[]);
+int TimerTestEntry(int argc, char* argv[]);
+int ListTestEntry(int argc, char* argv[]);
 
 inline void memset_tester(void* arg)
 {
 	static int data[1024];
 	memset(data, 0, sizeof(data));
 }
-
 
 #define LISTEN_BACKLOG 50
 #define MAX_EVENT_NUM 100
@@ -60,8 +61,9 @@ void default_handler(int signo)
 }
 int main(int argc, char* argv[])
 {
+	return ListTestEntry(argc, argv);
+	return TimerTestEntry(argc, argv);
 	return PatternsTestEntry(argc, argv);
-
 	return MemoryTestEntry(argc, argv);
 
 	printf("%d\n", IS_POW_2(0));
@@ -83,7 +85,7 @@ int main(int argc, char* argv[])
 	//sleep不占用cpu时间
 	BEGIN_COST_CALCULATE("sleep");
 	//sleep(3);
-	END_COST_CALCULATE;
+	END_COST_CALCULATE();
 
 	/*延迟测试用*/
 	int num = 0;
@@ -91,7 +93,7 @@ int main(int argc, char* argv[])
 	BEGIN_COST_CALCULATE("user calclute");
 	num = 100 * 1024;
 	data = new int[num];
-	END_COST_CALCULATE;
+	END_COST_CALCULATE();
 
 	BEGIN_COST_CALCULATE("bubble sort");
 	int i = 0;
@@ -109,7 +111,7 @@ int main(int argc, char* argv[])
 		fs << data[i] << endl;
 		i++;
 	}
-	END_COST_CALCULATE;
+	END_COST_CALCULATE();
 
 
 	BEGIN_COST_CALCULATE("quick sort");
@@ -129,7 +131,7 @@ int main(int argc, char* argv[])
 		i++;
 	}
 
-	END_COST_CALCULATE;
+	END_COST_CALCULATE();
 
 	BEGIN_TIMES_CALCULATE("memset", 10, memset_tester, NULL);
 	END_TIMES_CALCULATE();

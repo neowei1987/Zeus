@@ -18,7 +18,7 @@
 {\
 	CostCalculater _calculater(desc);
 
-#define END_COST_CALCULATE \
+#define END_COST_CALCULATE() \
 }
 
 #define BEGIN_TIMES_CALCULATE(desc, seconds, fnTest, arg) \

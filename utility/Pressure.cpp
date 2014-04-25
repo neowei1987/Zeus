@@ -16,6 +16,7 @@ CostCalculater::~CostCalculater()
 	printf ("++++++++++++++++%s+++++++++++++\n", m_pDesc);
 	printf ("start_time is : %f\n", m_time_head/ (double)m_tck);
 	printf ("end_time is : %f\n", m_time_end / (double)m_tck);
+	printf ("total_time is : %f\n", (m_time_end - m_time_head)/ (double)m_tck);
 
 	printf ("user time is : %f\n", ((m_time_buf_end.tms_utime - m_time_buf_head.tms_utime) / (double)m_tck));   /*用户进程所耗费的时间*/
 	printf ("systime time is : %f\n", ((m_time_buf_end.tms_stime - m_time_buf_head.tms_stime) / (double)m_tck));
