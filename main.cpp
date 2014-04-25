@@ -61,9 +61,9 @@ void default_handler(int signo)
 }
 int main(int argc, char* argv[])
 {
-	return ListTestEntry(argc, argv);
 	return TimerTestEntry(argc, argv);
 	return PatternsTestEntry(argc, argv);
+	return ListTestEntry(argc, argv);
 	return MemoryTestEntry(argc, argv);
 
 	printf("%d\n", IS_POW_2(0));

@@ -2,9 +2,18 @@
 #include <stdlib.h>
 #include "utility/Tools.h"
 #include "utility/Pressure.h"
+#include "Timer.h"
 
+void OnTimer(int iTimerId)
+{
+	printf("%d is timeout!\n", iTimerId);
+}
 int TimerTestEntry(int argc, char* argv[])
 {
+	Timer* timer = new ListTimer();
+	timer->AddTimer(100, OnTimer, true);
+	zues::Sleep(1000000);
+
 	int i = 0;
 	int nCount = atoi(argv[2]);
 	int iDelayUSec[] = {
