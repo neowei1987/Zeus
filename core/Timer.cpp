@@ -45,6 +45,7 @@ Timer::~Timer()
 
 int Timer::Run()
 {
+	zues::Sleep(1000);
 	while (true)	
 	{
 		int iSleepMicroSeconds = OnTimeout();
@@ -59,7 +60,10 @@ int Timer::Run()
 ListTimer::ListTimer() : Timer()
 {
 	m_pNodeList = new DoubleList();
-	pthread_mutex_init(&m_listLock, NULL);
+	pthread_mutexattr_init(&m_lockAttr);
+	pthread_mutexattr_settype(&m_lockAttr, PTHREAD_MUTEX_RECURSIVE);
+	pthread_mutex_init(&m_listLock, &m_lockAttr);
+
 	DoubleListInit(m_pNodeList);
 }
 
@@ -84,6 +88,15 @@ void ListTimer::InsertIntoSortedList(ListTimerNode* pNewNode)
 		}
 	}
 	DoubleListInsertBefore(pInsertPoint, &pNewNode->list);
+
+	/*
+	for_each_entry_at_rev_list(entry, m_pNodeList)
+	{
+		ListTimerNode* pNode = CONTAINER_PTR(entry, ListTimerNode, list);
+		printf("%p, %s \n", entry, pNode->m_tvNextTime.string());
+	}
+	*/
+
 	pthread_mutex_unlock(&m_listLock);	
 }
 int ListTimer::AddTimer(int iMicroSecond, TIMER_HANDLER fnHandler, bool bRepeat)
@@ -113,15 +126,16 @@ int ListTimer::OnTimeout()
 	TimeVal tvNow;
 	tvNow.setNow();
 	int ret = MIN_SLEEP_MSEC;
+	ListTimerNode* pNode = NULL;
+	DoubleList repeatList;
+	DoubleListInit(&repeatList);
 	for (DoubleList* entry = m_pNodeList->next; entry != m_pNodeList; )
 	{
-		ListTimerNode* pNode = CONTAINER_PTR(entry, ListTimerNode, list);
+		pNode = CONTAINER_PTR(entry, ListTimerNode, list);
 		if (pNode->m_tvNextTime > tvNow)	
 		{
-			ret = (pNode->m_tvNextTime - tvNow);
 			break;
 		}
-		printf("%d\n", 0);
 		//执行函数
 		if ( pNode->m_iCallType == CALLBACK_TYPE_FUNC)
 		{
@@ -140,10 +154,32 @@ int ListTimer::OnTimeout()
 		//如果有需要重新加入
 		if (pNode->m_bRepeat)
 		{
-			InsertIntoSortedList(pNode);
+			DoubleListInsertBefore(&repeatList, &pNode->list);
 		}
 	}
+	
+	DoubleList* tmp = NULL;
+	for (DoubleList* entry = repeatList.next; entry != &repeatList; )
+	{
+		//printf("reput!: %p\n", entry);
+		//从原来链表中摘除
+		DoubleListRemove(entry);
+		tmp = entry; 
+		entry = entry->next;
+		//插入定时器链表
+		pNode = CONTAINER_PTR(tmp, ListTimerNode, list);
+		InsertIntoSortedList(pNode);
+	}
+
+	if (m_pNodeList->next != m_pNodeList) //链表为空
+	{
+		pNode = CONTAINER_PTR(m_pNodeList->next, ListTimerNode, list);
+		ret = pNode->m_tvNextTime - tvNow;
+		//printf("Timer-%d: next sleep time: %d\n", pNode->m_iTimerId, ret);
+	}
+
 	pthread_mutex_unlock(&m_listLock);
+	//printf("sleep: %d\n", ret);
 	//没有任何任务，休眠最小粒度
 	return ret;		
 }

@@ -81,6 +81,7 @@ protected:
 private:
 	DoubleList* m_pNodeList;
 	pthread_mutex_t	m_listLock;
+	pthread_mutexattr_t m_lockAttr;
 };
 
 //基于堆实现的定时器

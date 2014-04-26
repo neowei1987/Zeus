@@ -15,8 +15,10 @@ public:
 	bool operator > (TimeVal& other);
 	bool operator >= (TimeVal& other);
 	long operator - (TimeVal& other);
+	const char* string();
 private:
 	struct timeval m_tv;
+	char m_strbuf[128];
 };
 
 //精确sleep, 精度为10ms，如果小于10ms，则精度大大降低

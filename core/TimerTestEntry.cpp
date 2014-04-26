@@ -4,17 +4,32 @@
 #include "utility/Pressure.h"
 #include "Timer.h"
 
+static int* g_pCounter = NULL;
 void OnTimer(int iTimerId)
 {
-	printf("%d is timeout!\n", iTimerId);
+	printf("%d : counter:%d\n", iTimerId, g_pCounter[iTimerId]++);
 }
 int TimerTestEntry(int argc, char* argv[])
 {
 	Timer* timer = new ListTimer();
-	timer->AddTimer(100, OnTimer, true);
-	zues::Sleep(1000000);
+		
+	srand(time(NULL));
 
 	int i = 0;
+	int num = atoi(argv[1]);
+	g_pCounter = new int[num];
+	while (i++ < num)
+	{
+		int interval = 20 + rand() % (3600 * 1000 - 20);
+		int iTimerId = timer->AddTimer(interval, OnTimer, true);
+		printf("Timer-%d start, every %d msecond.\n", iTimerId, interval);
+	}
+
+	while (true)
+	{
+		zues::Sleep(1000000);
+	}
+
 	int nCount = atoi(argv[2]);
 	int iDelayUSec[] = {
 		500 * 1000, 

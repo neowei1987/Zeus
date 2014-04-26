@@ -2,7 +2,7 @@
 #define ZUES_DEFINES_H
 
 #include <stdio.h>
-
+#include <stdint.h>
 /*
 #include <string>
 using std::string;
