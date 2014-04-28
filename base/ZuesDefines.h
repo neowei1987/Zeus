@@ -62,6 +62,17 @@ namespace name \
 #define NAMESPACE_END() \
 }
 
+#define max(a, b) (a >= b ? a : b)
+#define min(a, b) (a <= b ? a : b)
+#define max3(a, b, c) (max(a, max(b, c)))
+
+#define DELETE(ptr) \
+if (ptr != NULL)\
+	delete ptr;\
+	ptr = NULL;
+
+#define MAX_BACKLOG_NUM 10000
 #endif//ZUES_DEFINES_H
 
+#define PRINT_ERROR(desc)  perror(desc);
 

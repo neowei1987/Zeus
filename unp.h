@@ -1,27 +1,6 @@
 #include <netinet/in.h>
 
 #if 0
-struct sockaddr;
-struct sockaddr_in; 
-struct sockaddr_in6;
-struct sockaddr_un;
-struct sockaddr_dl;
-
-socklen_t len = 0;
-struct sockaddr_in addr;
-bzero(&addr, sizeof(addr));
-addr.sin_family= AF_INET;
-addr.sin_len = sizeof(addr); 
-addr.sin_port= htons(80);
-//out of date
-addr.sin_addr = inet_addr("19.2.12.12"); //INADDR_NONE 255.255.255.255的特殊性
-inet_aton("192.158.1.1", &(addr.sin_addr));
-const char* ip = inet_ntoa(addr.sin_addr); //不可重入，静态内存
-//new 
-#include <arpa/inet.h>
-inet_pton(AF_INET, "192.158.12.1", &(addr.sin_addr));
-char str[INET_ADDRSTRLEN];
-const char* ip = inet_ntop(AF_INET, &(addr.sin_addr), str, sizeof(str));
 
 //试着发送已经排队待发的任何数据，然后正常终止
 close();

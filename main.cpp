@@ -23,6 +23,8 @@ int BinaryTreeTestEntry(int argc, char* argv[]);
 int PatternsTestEntry(int argc, char* argv[]);
 int TimerTestEntry(int argc, char* argv[]);
 int ListTestEntry(int argc, char* argv[]);
+int NetworkTestEntry(int argc, char* argv[]);
+int SegmentTreeTestEntry(int argc, char* argv[]);
 
 inline void memset_tester(void* arg)
 {
@@ -61,6 +63,8 @@ void default_handler(int signo)
 }
 int main(int argc, char* argv[])
 {
+	return SegmentTreeTestEntry(argc, argv);
+	return NetworkTestEntry(argc, argv);
 	return TimerTestEntry(argc, argv);
 	return PatternsTestEntry(argc, argv);
 	return ListTestEntry(argc, argv);
