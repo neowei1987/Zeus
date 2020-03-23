@@ -1,6 +1,5 @@
 #include "Sort.h"
 
-
 void BubbleSort(int* data, int count)
 {
 	int tmp = 0;
