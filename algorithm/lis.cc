@@ -5,35 +5,14 @@
 #include <stack>
 #include "defines.h"
 using namespace std; 
+ 
+ /******************最长递增子序列*****************/
 
 class Solution {
 public:
-    //求两个排序数组的中位数
-
-    /*************分治**************/
-    double myPow(double x, int n) {
-        if (n == 0) {
-            return 1.0;
-        }
-
-        if (n < 0) {
-            if (n == INT_MIN) {
-                return 1 / (myPow(x, INT_MAX) * x); 
-            }
-            double t = myPow(x, -n);
-            //t趋近于0
-            return 1.0 / t;
-        }
-
-        if (n & 0x1) { //奇数
-            double t = myPow(x, n >> 1);
-            return t * t * x;
-        }
-        else {
-            double t = myPow(x, n >> 1);
-            return t * t;
-        }
-    }
+    //动态规划解法
+    //贪心+二分
+    //树状数组维护
 };
 
 int main() 
@@ -58,6 +37,7 @@ int main()
     //problem.permute(pushed);
     //cout << problem.majorityElement(popped);
     //problem.getLeastNumbers(popped, 0);
+    problem.reversePairs(popped);
     cout << "result: " << popped << "\n";
 
 	return 0; 

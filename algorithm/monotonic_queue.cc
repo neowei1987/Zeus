@@ -4,7 +4,7 @@
 #include <sstream>
 #include <stack>
 #include "defines.h"
-#incude "queue"
+#include "queue"
 using namespace std; 
 
 /*****************栈的应用**********************/
@@ -115,88 +115,57 @@ private:
 
 class Solution {
 public:
-
-    /*队列最大值
-    实现思路：
-    1. 利用两个stack，实现一个stack with max
-    2. 利用两个stack, 实现一个queue;
-    3. max = max(max(stack1), max(stack2));
-    */
-    int QueueWithMaxImpl() {
-        return 0;
-    };
-
-    int surfaceArea(vector<vector<int>>& grid) {
-        int area = 0; 
-        if (grid.size() == 0 || grid[0].size() == 0) {
-            return 0;
-        }
-        int h = grid.size();
-        int w = grid[0].size();
-        for (int i = 0 ; i < h; ++i) {
-            int pre = 0;
-            for (int j = 0; j < w; ++j) {
-                area += (!!grid[i][j] << 1); //Z轴
-                area += (grid[i][j]  > pre ? ((grid[i][j] - pre) << 1) : 0);
-                pre = grid[i][j] ;
-            }  
+        vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        if (k == 1) {
+            return nums;
         }
 
-        for (int j = 0 ; j < w; ++j) {
-            int pre = 0;
-            for (int i = 0; i < h; ++i) {
-                area += (grid[i][j]  > pre ? ((grid[i][j] - pre) << 1) : 0);
-                pre = grid[i][j] ;
+        int n = nums.size();
+        vector<int> r;
+        deque<int> q;//双端队列
+        
+        //前k个
+        for (int i = 0; i < k - 1; i++) {
+            while (!q.empty() && nums[i] > nums[q.back()]) {
+                q.pop_back();
             }
+            q.push_back(i); //这里有一个点：如果前K个数字为1，3，2，6，8，7；那么容器中的内容为8，7（为什么要这样子，因为窗口需要往前移动）
         }
 
-        return area;
-    }
+        for (int i = k - 1; i < n; ++i) {
+            if (!q.empty() && q.front() <= i - k) { //移除容器中在窗口之外的元素
+                q.pop_front();
+            }
 
-    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
-        if (pushed.size() != popped.size()) {
-            return false;
-        }
-        if (pushed.empty()) {
-            return true;
-        }
-        int n =  pushed.size();
-        stack<int> s;
-        int i = 0;  //指向pop序列
-        int k = 0;  //指向pushed序列
-        s.push(-1);
-        while (i < n) {
-            cout << "compared:"  << popped[i] << " vs " << s.top() << endl;
-            if (s.top() != popped[i]) {
-                bool matched = false;
-                for (; k < n; ++k) {
-                    if (pushed[k] != popped[i]) {
-                        cout << "pushed:"  << pushed[k] << endl;
-                        s.push(pushed[k]);
-                    }
-                    else {
-                        matched = true;
-                        i++;
-                        k++;
-                        break;
-                    }
-                }
-                if (!matched) {
-                    if (k == n) {
-                        return false;
-                    }
-                }
+            while (!q.empty() && nums[i] > nums[q.back()]) {
+                q.pop_back();
             }
-            else {
-                cout << "popped:"  << s.top() << endl;
-                s.pop();
-                
-                i++;
-            }
+
+            r.push_back(q.empty() ? nums[i] : nums[q.front()]);
+            q.push_back(i);
         }
-        return true;
+
+        return r;
     }
 };
+
+实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。
+
+如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。
+
+必须原地修改，只允许使用额外常数空间。
+
+以下是一些例子，输入位于左侧列，其相应输出位于右侧列。
+1,2,3 → 1,3,2
+1,3,2 递归问题...
+1，3，2； =》 2，1，3 怎么来的？
+2，3，1； //tihuanzhhou 
+    3,2由于是递减的；所以无法。
+ 
+3,2,1 → 1,2,3
+
+1,1,5 → 1,5,1
+
 
 int main() 
 { 

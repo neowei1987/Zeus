@@ -103,6 +103,10 @@ public:
 
         return dummy->next; 
     }
+
+    //反转整个链表；递归版
+    //反转前N个节点
+    //反转m～n的节点
 };
 
 int main() 
