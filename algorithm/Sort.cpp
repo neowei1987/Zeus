@@ -24,6 +24,8 @@ void BubbleSort(int* data, int count)
 	}
 }
 
+
+
 static void quick_sort(int* data, int p, int q);
 static int partition(int* data, int p, int q);
 

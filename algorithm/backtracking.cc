@@ -15,7 +15,6 @@ public:
             fprintf(stderr, "%s\n", numbers);
             return;
         }
-
         for (int i = 0; i < 10; ++i) {
             numbers[depth] = '0' + i;
             _printNumbers(depth + 1, max_depth, numbers, result);
@@ -91,7 +90,6 @@ int main()
     //problem.permute(pushed);
     //cout << problem.majorityElement(popped);
     //problem.getLeastNumbers(popped, 0);
-    problem.reversePairs(popped);
     cout << "result: " << popped << "\n";
 
 	return 0; 

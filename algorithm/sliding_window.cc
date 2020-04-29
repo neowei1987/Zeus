@@ -12,29 +12,71 @@ using namespace std;
 
 class Solution {
 public:
+    bool isOK(vector<int>& counter) {
+        for (int i = 0; i < counter.size(); ++i)  {
+            if (counter[i] < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     string minWindow(string src, string tt) {
         //S = "ADOBECODEBANC", T = "ABC"
         //输出: "BANC"
         vector<int> counter(256, 0);
-        const char* s = src.c_str();
+        vector<bool> needed(256, false);
+        const char* l = src.c_str();
         const char* t = tt.c_str();
 
+        //子串的模式信息
+        int matched_cnt = tt.length();
         while (*t) {
-            counter[*t]++;
+            counter[*t]--;
+            needed[*t] = true;
             t++;
         } 
-        
-        while (*s) {
-            if (*s == *t) {
-                s++;
-                t++;
+
+        //如何判定当前的信息是否足够...
+        int mw = src.length() + 1;
+        const char* r = l;
+        const char* ret = l;
+        while (*r) {
+            if (needed[*r]) {
+                counter[*r]++;
+                //cout << *r << "," << counter[*r] << ","<< " matched\n";
+                r++;
             }
             else {
-                s++;
+                r++;
+                continue;
+            }
+
+            while (isOK(counter)) {
+                if (mw > int(r - l)) {
+                    mw = int(r - l);
+                    ret = l;
+                    //cout << string(ret, mw) << "ws:" << mw << endl;
+                }
+                if (needed[*l]) {
+                    if (counter[*l] <= 0) {
+                        break;
+                    }
+                    else {
+                        counter[*l]--;
+                        //cout << *l << "," << counter[*l] << ","<< " removed\n";
+                    }
+                }
+                l++;
             }
         }
 
-        return "";
+        if (isOK(counter)) {
+            return string(ret, mw);
+        }
+        else {
+            return "";
+        }
     }
 };
 
@@ -58,3 +100,5 @@ int main(int argc, char* argv[])
 
 	return 0; 
 } 
+
+

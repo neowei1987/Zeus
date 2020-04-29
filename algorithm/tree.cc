@@ -148,6 +148,56 @@ public:
         }
         return buildTreeCore(preorder, inorder, 0, preorder.size() -1 , 0, inorder.size() - 1);
     }   
+
+    /*
+    typedef pair<int, int> PII;
+
+    void dfs(TreeNode* root, PII single, PII& global) {
+        if (!root) {
+            global.first = std::max(global.first, single.first);
+            return;
+        };
+
+        //如果遇到一个负节点
+        if (root->val < 0) {
+            global.second = std::max(global.second, single.second);
+        }
+        
+        PII lg, rg;
+
+        single.first += root->val;
+        dfs(root->left, single, lg);
+        dfs(root->right, single, rg);
+
+        global.first = std::max();
+    } 
+
+    int maxPathSum(TreeNode* root) {
+        if (!root) {
+            return 0;
+        }
+
+        PII global, cur;
+        global.first = INT_MIN;
+        cur.first = 0;
+        dfs(root, cur, global);
+    }
+    */
+
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (!root || root->val == p->val || root->val == q->val) return root;
+
+        auto left = lowestCommonAncestor(root->left, p, q); //在左边找
+        auto right = lowestCommonAncestor(root->right, p, q); //在右边找
+
+        if (!left) return right;
+        if (!right) return left;
+
+        return root;
+
+    }
+
+    
 };
 
 int main() 
@@ -172,7 +222,6 @@ int main()
     //problem.permute(pushed);
     //cout << problem.majorityElement(popped);
     //problem.getLeastNumbers(popped, 0);
-    problem.reversePairs(popped);
     cout << "result: " << popped << "\n";
 
 	return 0; 

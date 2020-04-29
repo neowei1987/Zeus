@@ -126,6 +126,21 @@ public:
         return 0;
     };
 
+    int trap(vector<int>& height) {
+        stack<int> s;
+        int res = 0;
+        for (int i = 0; i < height.size(); ++i) {
+            while (s.size() & height[i] > height[s.top()]) {
+                auto t = height[s.top()];
+                s.pop();
+                if (s.empty()) break;
+                res += (min(height[s.top()], height[i]) - t) * (i - s.top() - 1);
+            } 
+            s.push(i);
+        }
+        return res;
+    }
+
     int surfaceArea(vector<vector<int>>& grid) {
         int area = 0; 
         if (grid.size() == 0 || grid[0].size() == 0) {

@@ -8,6 +8,7 @@ using namespace std;
 std::ostream& operator << (std::ostream& in, std::vector<int>& target);
 std::istream& operator >> (std::istream& in, std::vector<int>& target);
 
+typedef std::pair<int, int> PII;
 
 struct ListNode {
     int val;

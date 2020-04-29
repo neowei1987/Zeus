@@ -5,40 +5,14 @@
 #include <stack>
 #include "defines.h"
 using namespace std; 
-
-/*减治策略*/
+ 
+ /******************最长递增子序列*****************/
 
 class Solution {
 public:
-    bool searchMatrix(vector<vector<int> >& matrix, int target) {
-        int h = matrix.size();
-        if (h == 0) {
-            return false;
-        }
-        int w = matrix[0].size();
-        if (w == 0) {
-            return false;
-        }
-
-        int i = 0;
-        int j = w - 1;
-        while (i < h && j >= 0 && matrix[i][j] != target) {
-            if (matrix[i][j] > target) { 
-                j--;
-                continue;
-            }
-
-            if (matrix[i][j] < target) { 
-                i++;
-                continue;
-            }
-        }
-        
-        if (i >= h || j < 0) {
-            return false;
-        }
-        return true;
-    }
+    //动态规划解法
+    //贪心+二分
+    //树状数组维护
 };
 
 int main() 
@@ -63,6 +37,7 @@ int main()
     //problem.permute(pushed);
     //cout << problem.majorityElement(popped);
     //problem.getLeastNumbers(popped, 0);
+    problem.reversePairs(popped);
     cout << "result: " << popped << "\n";
 
 	return 0; 

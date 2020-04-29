@@ -73,5 +73,3 @@ int main()
 { 
 	return 0; 
 } 
-
-//短网址

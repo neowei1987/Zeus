@@ -10,6 +10,51 @@ using namespace std;
 
 class Solution {
 public:
+    ListNode* get_tail(ListNode* head) {	
+		while (head->next) head = head->next; return head;
+	}
+
+    ListNode* sortList(ListNode* head) {
+        if (!head || !head->next) {
+			return head;
+		}
+
+		int val = head->val;
+		auto left = new ListNode(-1), right = new ListNode(-1), mid = new ListNode(-1);
+		auto ltail = left, mtail = mid, rtail = right;
+		
+		while (head) {
+			if (head->val > val) {
+				rtail = rtail->next = head;
+			}
+			else if (head->val == val) {
+				mtail = mtail->next = head;
+			}
+			else {
+				ltail = ltail->next = head;
+			}
+			head = head->next;
+		}
+
+		rtail->next = NULL;
+		ltail->next = NULL;
+		mtail->next = NULL;
+
+		left->next = sortList(left->next);
+		right->next = sortList(right->next);
+
+		//join	
+		mtail->next = right->next;
+		get_tail(left)->next = mid->next;
+
+		auto p = left->next;
+
+		delete left;
+		delete right;
+		delete mid;
+
+		return p;
+    }
 
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         if (l1 == NULL) {
@@ -27,6 +72,17 @@ public:
             l2->next = mergeTwoLists(l1, l2->next);
             return l2;
         }
+    }
+
+    ListNode* reverseList(ListNode* head) {
+        ListNode* pre = nullptr;
+        while (head) {
+            auto t = head->next;
+            head->next = pre;
+            pre = head;
+            head = t;
+        } 
+        return head;
     }
 
     ListNode* getKthFromEnd(ListNode* head, int k) {

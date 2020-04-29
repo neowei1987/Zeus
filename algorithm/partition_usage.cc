@@ -58,9 +58,54 @@ public:
             }
         }
     }
+
+    //https://www.cnblogs.com/sdlwlxf/p/5131793.html
+
+    int _partition(vector<int>& nums, int left, int right) {
+        int p = nums[left];
+        int l = left;
+        int r = right + 1;
+        while (true) {
+            //必须放在前面；因为前面r== right+1; 所以l必定小于r; r必定会--；
+            //反过来， 如果把第二段放到前面，当left=right的话，l++会导致程序break;
+            while (l < r && (cout << r << endl, 1) && nums[--r] > p) {} 
+            if (l >= r) {
+                break;
+            }
+
+            while (l < r && nums[++l] <= p) {}
+            if (l >= r) {
+                break;
+            }
+
+            swap(nums[l], nums[r]);
+        }
+
+        //经过上面的循环，有两种情况：
+        //l->12, 9<-r; 交换之后，r->9, l->12; 此时必须交换9；
+        //1->12, 11, 9<-r; 交换之后，r->10<-l； 此时l=r；
+        swap(nums[left], nums[r]);
+        return r;
+    }
+
+    void _quickSort(vector<int>& nums, int l, int r) {
+        if (l >= r) {
+            return;
+        }
+
+        int p = _partition(nums, l, r);
+        //cout << p << "[" << l << "~" << r <<"], datas:" << nums << endl;
+        _quickSort(nums, l, p - 1);
+        _quickSort(nums, p + 1, r);
+    }
+
+     vector<int> sortArray(vector<int>& nums) {
+        _quickSort(nums, 0, nums.size() - 1);
+        return nums;
+    }
 };
 
-int main() 
+int main(int argc, char* argv[]) 
 { 
     std::stringstream ss;
     ss << "[1,2,3,4]";  
@@ -72,7 +117,7 @@ int main()
     ss >> pushed;
 
     ss.str("");
-    ss << "[7,5,6,4]";
+    ss << "[" << argv[1] << "]";
     ss >> popped;
 
     Solution problem;
@@ -82,7 +127,7 @@ int main()
     //problem.permute(pushed);
     //cout << problem.majorityElement(popped);
     //problem.getLeastNumbers(popped, 0);
-    problem.reversePairs(popped);
+    problem.sortArray(popped);
     cout << "result: " << popped << "\n";
 
 	return 0; 

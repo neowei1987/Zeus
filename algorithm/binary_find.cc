@@ -111,9 +111,19 @@ public:
         cout << "min:" << min << ",idx:" << min_idx << "size:" << nums.size() << endl;
         return binary_find_with_mod(nums, min_idx, target) == -1 ? false : true;
     }
+
+    int bfind(vector<int>& nums, int target) {
+        int l = 0, r = nums.size();
+        while (l < r) {
+            int mid = l + r >> 1;
+            if (nums[mid] >= target) r = mid;
+            else l = mid + 1;
+        }
+        return r;
+    }
 };
 
-int main() 
+int main(int argc, char* argv[]) 
 { 
     std::stringstream ss;
     ss << "[1,2,3,4]";  
@@ -124,11 +134,11 @@ int main()
     //std::cin >> k;
     ss >> pushed;
     ss.str("");
-    ss << "[7,5,6,4]";
+    ss << "[" << argv[1] << "]";
     ss >> popped;
 
     Solution problem;
-    problem.searchInRotateArray(popped, 10);
+    cout << problem.bfind(popped, 10) << endl;
 
 	return 0; 
 } 
