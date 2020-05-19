@@ -60,7 +60,7 @@ int main()
     //problem.permute(pushed);
     //cout << problem.majorityElement(popped);
     //problem.getLeastNumbers(popped, 0);
-    problem.reversePairs(popped);
+    //problem.reversePairs(popped);
     cout << "result: " << popped << "\n";
 
 	return 0; 

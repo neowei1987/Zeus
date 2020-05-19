@@ -39,35 +39,7 @@ void merge_sort(int q[], int l, int r)
     for (i = l, j = 0; i <= r; i ++, j ++ ) q[i] = tmp[j];
 }
 
-//整数二分算法模板
-class Solution {
-public:
-    int getNumberOfK(vector<int>& nums , int k) {
-    if (nums.empty())  return 0;
-    int l = 0, r = nums.size() - 1;
-   
-    //找到 >=k 的最小值
-    while (l < r) {
-        int mid = l + r - l >> 1;
-        if (nums[mid] >= k) r = mid;
-        else  l = mid + 1;
-    }
-
-    //找到 <=k 的最大值
-    while (l < r) {
-        int mid = l + r - l + 1 >> 1;
-        if (nums[mid] <= k) l = mid;
-        else  r = mid - 1;    
-    }
-
-    return r - left + 1;
-}
-};
-
-
-
-
-https://www.cnblogs.com/smallocean/p/11913963.html
+//整数二分算法模板 https://www.cnblogs.com/smallocean/p/11913963.html
 
 bool check(int x) {return true;/* ... */} // 检查x是否满足某种性质
 
@@ -108,8 +80,6 @@ double bsearch_3(double l, double r)
     }
     return l;
 }
-
-
 
 //高精度加法 —— 模板题 AcWing 791. 高精度加法
 // C = A + B, A >= 0, B >= 0
@@ -183,14 +153,19 @@ vector<int> div(vector<int> &A, int b, int &r)
 }
 
 //一维前缀和 —— 模板题 AcWing 795. 前缀和
+int prefix_sum() {
+    S[i] = a[1] + a[2] + ... a[i];
+    a[l] + ... + a[r] = S[r] - S[l - 1];
+}
 
-S[i] = a[1] + a[2] + ... a[i]
-a[l] + ... + a[r] = S[r] - S[l - 1]
 
 //二维前缀和 —— 模板题 AcWing 796. 子矩阵的和
-S[i, j] = 第i行j列格子左上部分所有元素的和
-以(x1, y1)为左上角，(x2, y2)为右下角的子矩阵的和为：
-S[x2, y2] - S[x1 - 1, y2] - S[x2, y1 - 1] + S[x1 - 1, y1 - 1]
+int 2d_preifx_sum()
+{
+    S[i, j] = 第i行j列格子左上部分所有元素的和
+    //以(x1, y1)为左上角，(x2, y2)为右下角的子矩阵的和为：
+    S[x2, y2] - S[x1 - 1, y2] - S[x2, y1 - 1] + S[x1 - 1, y1 - 1]
+}
 
 //一维差分 —— 模板题 AcWing 797. 差分
 给区间[l, r]中的每个数加上c：
@@ -202,7 +177,8 @@ S[x1, y1] += c, S[x2 + 1, y1] -= c, S[x1, y2 + 1] -= c, S[x2 + 1, y2 + 1] += c
 
 //位运算 —— 模板题 AcWing 801. 二进制中1的个数
 求n的第k位数字: n >> k & 1
-返回n的最后一位1：lowbit(n) = n & -n
+返回n的最后一位1：lowbit(n) = n & -n （1010000 -> 10000）
+将最后一位1置为0：n & (n - 1) （1010000 -> 1000000）
 
 //双指针算法 —— 模板题 AcWIng 799. 最长连续不重复子序列, AcWing 800. 数组元素的目标和
 常见问题分类：
@@ -215,11 +191,10 @@ for (int i = 0, j = 0; i < n; i ++ )
     // 具体问题的逻辑
 }
 
-离散化 —— 模板题 AcWing 802. 区间和
+//离散化 —— 模板题 AcWing 802. 区间和
 vector<int> alls; // 存储所有待离散化的值
 sort(alls.begin(), alls.end()); // 将所有值排序
 alls.erase(unique(alls.begin(), alls.end()), alls.end());   // 去掉重复元素
-
 // 二分求出x对应的离散化的值
 int find(int x) // 找到第一个大于等于x的位置
 {
@@ -255,7 +230,7 @@ void merge(vector<PII> &segs)
     segs = res;
 }
 
-单链表 —— 模板题 AcWing 826. 单链表
+//单链表 —— 模板题 AcWing 826. 单链表
 // head存储链表头，e[]存储节点的值，ne[]存储节点的next指针，idx表示当前用到了哪个节点
 int head, e[N], ne[N], idx;
 
@@ -277,7 +252,8 @@ void remove()
 {
     head = ne[head];
 }
-双链表 —— 模板题 AcWing 827. 双链表
+
+//双链表 —— 模板题 AcWing 827. 双链表
 // e[]表示节点的值，l[]表示节点的左指针，r[]表示节点的右指针，idx表示当前用到了哪个节点
 int e[N], l[N], r[N], idx;
 
@@ -303,7 +279,8 @@ void remove(int a)
     l[r[a]] = l[a];
     r[l[a]] = r[a];
 }
-栈 —— 模板题 AcWing 828. 模拟栈
+
+//栈 —— 模板题 AcWing 828. 模拟栈
 // tt表示栈顶
 int stk[N], tt = 0;
 
@@ -321,7 +298,8 @@ if (tt > 0)
 {
 
 }
-队列 —— 模板题 AcWing 829. 模拟队列
+
+//队列 —— 模板题 AcWing 829. 模拟队列
 1. 普通队列：
 // hh 表示队头，tt表示队尾
 int q[N], hh = 0, tt = -1;
@@ -340,7 +318,8 @@ if (hh <= tt)
 {
 
 }
-2. 循环队列
+
+//2. 循环队列
 // hh 表示队头，tt表示队尾的后一个位置
 int q[N], hh = 0, tt = 0;
 
@@ -360,16 +339,18 @@ if (hh != tt)
 {
 
 }
-单调栈 —— 模板题 AcWing 830. 单调栈
-常见模型：找出每个数左边离它最近的比它大/小的数
+
+//单调栈 —— 模板题 AcWing 830. 单调栈
+//常见模型：找出每个数左边离它最近的比它大/小的数
 int tt = 0;
 for (int i = 1; i <= n; i ++ )
 {
     while (tt && check(stk[tt], i)) tt -- ;
     stk[ ++ tt] = i;
 }
-单调队列 —— 模板题 AcWing 154. 滑动窗口
-常见模型：找出滑动窗口中的最大值/最小值
+
+//单调队列 —— 模板题 AcWing 154. 滑动窗口
+//常见模型：找出滑动窗口中的最大值/最小值
 int hh = 0, tt = -1;
 for (int i = 0; i < n; i ++ )
 {
@@ -377,9 +358,10 @@ for (int i = 0; i < n; i ++ )
     while (hh <= tt && check(q[tt], i)) tt -- ;
     q[ ++ tt] = i;
 }
-KMP —— 模板题 AcWing 831. KMP字符串
+
+//KMP —— 模板题 AcWing 831. KMP字符串
 // s[]是长文本，p[]是模式串，n是s的长度，m是p的长度
-求模式串的Next数组：
+//求模式串的Next数组：
 for (int i = 2, j = 0; i <= m; i ++ )
 {
     while (j && p[i] != p[j + 1]) j = ne[j];
@@ -540,6 +522,8 @@ void up(int u)
 
 // O(n)建堆
 for (int i = n / 2; i; i -- ) down(i);
+
+
 一般哈希 —— 模板题 AcWing 840. 模拟散列表
 (1) 拉链法
     int h[N], e[N], ne[N], idx;
@@ -578,6 +562,7 @@ for (int i = n / 2; i; i -- ) down(i);
         }
         return t;
     }
+
 字符串哈希 —— 模板题 AcWing 841. 字符串哈希
 核心思想：将字符串看成P进制数，P的经验值是131或13331，取这两个值的冲突概率低
 小技巧：取模的数用2^64，这样直接用unsigned long long存储，溢出的结果就是取模的结果
@@ -656,6 +641,7 @@ while (q.size())
         }
     }
 }
+
 拓扑排序 —— 模板题 AcWing 848. 有向图的拓扑序列
 时间复杂度 O(n+m)O(n+m), nn 表示点数，mm 表示边数
 bool topsort()
@@ -682,6 +668,7 @@ bool topsort()
     // 如果所有点都入队了，说明存在拓扑序列；否则不存在拓扑序列。
     return tt == n - 1;
 }
+
 朴素dijkstra算法 —— 模板题 AcWing 849. Dijkstra求最短路 I
 时间复杂是 O(n2+m)O(n2+m), nn 表示点数，mm 表示边数
 int g[N][N];  // 存储每条边
@@ -711,6 +698,7 @@ int dijkstra()
     if (dist[n] == 0x3f3f3f3f) return -1;
     return dist[n];
 }
+
 堆优化版dijkstra —— 模板题 AcWing 850. Dijkstra求最短路 II
 时间复杂度 O(mlogn)O(mlogn), nn 表示点数，mm 表示边数
 typedef pair<int, int> PII;
@@ -752,6 +740,7 @@ int dijkstra()
     if (dist[n] == 0x3f3f3f3f) return -1;
     return dist[n];
 }
+
 Bellman-Ford算法 —— 模板题 AcWing 853. 有边数限制的最短路
 时间复杂度 O(nm)O(nm), nn 表示点数，mm 表示边数
 注意在模板题中需要对下面的模板稍作修改，加上备份数组，详情见模板题。
@@ -784,6 +773,7 @@ int bellman_ford()
     if (dist[n] > 0x3f3f3f3f / 2) return -1;
     return dist[n];
 }
+
 spfa 算法（队列优化的Bellman-Ford算法） —— 模板题 AcWing 851. spfa求最短路
 时间复杂度 平均情况下 O(m)O(m)，最坏情况下 O(nm)O(nm), nn 表示点数，mm 表示边数
 int n;      // 总点数
@@ -826,6 +816,7 @@ int spfa()
     if (dist[n] == 0x3f3f3f3f) return -1;
     return dist[n];
 }
+
 spfa判断图中是否存在负环 —— 模板题 AcWing 852. spfa判断负环
 时间复杂度是 O(nm)O(nm), nn 表示点数，mm 表示边数
 int n;      // 总点数
@@ -872,6 +863,7 @@ bool spfa()
 
     return false;
 }
+
 floyd算法 —— 模板题 AcWing 854. Floyd求最短路
 时间复杂度是 O(n3)O(n3), nn 表示点数
 初始化：
@@ -886,6 +878,7 @@ void floyd()
     for (int k = 1; k <= n; k ++ )
         for (int i = 1; i <= n; i ++ )
             for (int j = 1; j <= n; j ++ )
+     
                 d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
 }
 朴素版prim算法 —— 模板题 AcWing 858. Prim算法求最小生成树
@@ -919,6 +912,7 @@ int prim()
 
     return res;
 }
+
 Kruskal算法 —— 模板题 AcWing 859. Kruskal算法求最小生成树
 时间复杂度是 O(mlogm)O(mlogm), nn 表示点数，mm 表示边数
 int n, m;       // n是点数，m是边数
@@ -963,6 +957,7 @@ int kruskal()
     if (cnt < n - 1) return INF;
     return res;
 }
+
 染色法判别二分图 —— 模板题 AcWing 860. 染色法判定二分图
 时间复杂度是 O(n+m)O(n+m), nn 表示点数，mm 表示边数
 int n;      // n表示点数
@@ -999,6 +994,7 @@ bool check()
             }
     return flag;
 }
+
 匈牙利算法 —— 模板题 AcWing 861. 二分图的最大匹配
 时间复杂度是 O(nm)O(nm), nn 表示点数，mm 表示边数
 int n1, n2;     // n1表示第一个集合中的点数，n2表示第二个集合中的点数
